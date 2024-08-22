@@ -1,16 +1,21 @@
 import PatientForm from "@/components/forms/PatientForm";
+import PasskeyModal from "@/components/PasskeyModal";
 import { Button } from "@/components/ui/button";
 
 
 
 import Image from "next/image";
 import Link from "next/link";
-export default function Home() {
+export default function Home({searchParams}:SearchParamProps) {
+  // here we can check if the user wants to login as admin or not 
+  const isAdmin=searchParams.admin === 'true';
 
   return (
     <div className="flex h-screen max-he-screen">
 
       {/* TODO: OTP verification */}
+      {isAdmin && <PasskeyModal/>}
+      
 
       <section className=" remove-scrollbar container my-auto">
         <div className="sub-container max-w-[496px]">
