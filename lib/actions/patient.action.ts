@@ -11,42 +11,46 @@ import { parse } from "path";
 
 export const createUser = async (user: CreateUserParams) => {
 
-    try {
+  try {
+    console.log("entered try block of createUser patient action\n")
+    console.log(user)
 
-        const newuser = await users.create(
-            ID.unique(),
-            user.email,
-            user.phone,
-            undefined,
-            user.name
-        );
-        console.log("user created from patient actions.ts file ")
-        return parseStringify(newuser);
+    const newuser = await users.create(
+
+      ID.unique(),
+      user.email,
+      user.phone,
+      undefined,
+      user.name
+    );
+    console.log(newuser)
+    console.log("user created from patient actions.ts file ")
+    return newuser;
 
 
-    } catch (error: any) {
-        if (error && error?.code === 409) {
+  } catch (error: any) {
+    if (error && error?.code === 409) {
 
-            const existingUser = await users.list([
-                Query.equal('email', [user.email])
-            ]);
-            return existingUser.users[0];
-        }
-        console.log("An error occured while creating a new user:", error)
+      const existingUser = await users.list([
+        Query.equal('email', [user.email])
+      ]);
+      return existingUser.users[0];
     }
+    console.log("An error occured while creating a new user:", error)
+  }
 
 }
 
 
 export const getUser = async (userId: string) => {
 
-    try {
-        const user = await users.get(userId)
-        return parseStringify(userId);
+  try {
+    const user = await users.get(userId)
+    return parseStringify(userId);
 
-    } catch (error) {
-        console.log(error)
-    }
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 // registerpatient
@@ -131,7 +135,7 @@ export const registerPatient = async ({
       PATIENT_COLLECTION_ID!,
       ID.unique(),
       {
-        
+
         identificationDocumentId: file?.$id ? file.$id : null,
         identificationDocumentUrl: file?.$id
           ? `${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${file.$id}/view??project=${PROJECT_ID}`
@@ -140,7 +144,7 @@ export const registerPatient = async ({
       }
     );
 
-     console.log("patient object inserted into patient collection \n")
+    console.log("patient object inserted into patient collection \n")
 
     return parseStringify(newPatient);
   } catch (error) {
@@ -151,16 +155,16 @@ export const registerPatient = async ({
 
 
 // get patient server action
-export const getPatient=async(userId: string)=> {
-    try{
-        const patients=await databases.listDocuments(
-            DATABASE_ID!,
-            PATIENT_COLLECTION_ID!,
-            [Query.equal('userid',userId)]
-        );
+export const getPatient = async (userId: string) => {
+  try {
+    const patients = await databases.listDocuments(
+      DATABASE_ID!,
+      PATIENT_COLLECTION_ID!,
+      [Query.equal('userid', userId)]
+    );
 
-        return parseStringify(patients.documents[0]);
-    }catch(error){
-        console.log(error)
-    }
+    return parseStringify(patients.documents[0]);
+  } catch (error) {
+    console.log(error)
+  }
 }

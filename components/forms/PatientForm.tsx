@@ -47,6 +47,7 @@ export function PatientForm() {
   async function onSubmit(values: z.infer<typeof UserFormValidation>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    console.log("submitting the request for creating new user inside patient form \n")
     setIsLoading(true);
 
     try{
@@ -56,19 +57,24 @@ export function PatientForm() {
         phone:values.phone,
 
       };
+      console.log(userData)
 
       const user=await createUser(userData);
-      console.log("user created")
+     
 
       if(user) {
+        console.log("user created now redirecting\n")
         router.push(`/patients/${user.$id}/register`)
 
+      }else{
+        console.log("error user cant be creater\n")
       }
 
 
     }catch(error){
       console.log(error);
     }
+    console.log("hogya\n")
     setIsLoading(false);
 
 

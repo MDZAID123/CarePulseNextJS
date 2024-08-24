@@ -3,10 +3,16 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { RegisterForm } from '@/components/forms/RegisterForm'
 import { getUser } from '@/lib/actions/patient.action'
+
+import * as Sentry from '@sentry/nextjs'
 const Registration = async ({params : { userId } }: SearchParamProps) => {
 
     const user=await getUser(userId);
+    //here we can simply paste the sentry metrics
+    Sentry.metrics.set("user_view_register",user.name);
+    //this way we can add our users to a user view 
 
+    //which will help us to allow how many users have viewed the register page
   console.log("user from registrstion page.tsx component\n")
   console.log(user)
   

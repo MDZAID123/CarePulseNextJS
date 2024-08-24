@@ -24,9 +24,10 @@ const StatusBadge = ({status}:{status:Status}) => {
             'text-red-500': status === 'cancelled'
 
         })}>
+          
 
         </p>
-    StatusBadge
+  {status}
     </div>
   )
 }

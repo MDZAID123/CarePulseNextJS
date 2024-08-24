@@ -3,12 +3,15 @@ import PatientForm from "@/components/forms/PatientForm";
 import { Button } from "@/components/ui/button";
 import { getPatient } from "@/lib/actions/patient.action";
 
-
+import * as Sentry from '@sentry/nextjs';
 
 import Image from "next/image";
 import Link from "next/link";
 export default async  function NewAppointment({params: { userId }}:SearchParamProps) {
     const patient =await getPatient(userId);
+    //at this point we are getting patient not a user 
+    Sentry.metrics.set("user_view_new-appointment",patient.name);
+
     console.log( typeof userId)
     console.log("patient fetched inside of the appointment page\n")
     console.log(patient)

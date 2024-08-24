@@ -8,6 +8,7 @@ import { DATABASE_ID, databases, APPOINTMENT_COLLECTION_ID } from "../appwrite.c
 import { parseStringify } from "../utils";
 import { parse } from "path";
 import { Appointment } from "@/types/appwrite.types";
+import { revalidatePath } from "next/cache";
 
 
 
@@ -95,6 +96,36 @@ export const getRecentAppointmentList=async ()=> {
         }
 
         return parseStringify(data);
+
+
+    }catch(error){
+        console.log(error);
+    }
+}
+
+
+
+// update appointment server action
+
+export const updateAppointment=async({appointmentId,userId,appointment,type}:UpdateAppointmentParams)=>{
+
+    try{
+        // if wverything goes right we want to update the appointment to schedule
+        const updatedAppointment=await databases.updateDocument(
+            DATABASE_ID!,
+            APPOINTMENT_COLLECTION_ID!,
+            appointmentId,
+            appointment
+        )
+
+        if(!updateAppointment){
+            throw new Error('Appointment not found');
+        }
+        //else we want to send an sms notification if the appointmnet was successfully booked
+        //todo sms notifcation after success
+        //now we will be revalidate the path 
+        revalidatePath('/admin');
+        return parseStringify(updateAppointment)
 
 
     }catch(error){

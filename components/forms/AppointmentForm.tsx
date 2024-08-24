@@ -19,7 +19,8 @@ import { FormFieldType } from './PatientForm'
 
 import { Doctors } from '@/constants'
 import { SelectItem } from '../ui/select'
-import { createAppointment } from '@/lib/actions/appointment.actions'
+import { createAppointment, updateAppointment } from '@/lib/actions/appointment.actions'
+import { Appointment } from '@/types/appwrite.types'
 
 
 
@@ -29,11 +30,15 @@ export function AppointmentForm({
   userId,
   patientId,
   type="create",
+  appointment,
+  setOpen
  
 }:{
-  userId:string,
-  patientId:string,
-  type:"create" |"schedule"|"cancel",
+  userId:string;
+  patientId:string;
+  type:"create" |"schedule"|"cancel";
+  appointment?:Appointment,
+  setOpen:(open:boolean) => void
   
 }) {
   // 1. Define your form.
@@ -44,14 +49,16 @@ export function AppointmentForm({
 
   const AppointmentFormValidation=getAppointmentSchema(type);
 
+  console.log(appointment)
+
   const form = useForm<z.infer<typeof AppointmentFormValidation>>({
     resolver: zodResolver(AppointmentFormValidation),
     defaultValues: {
-      primaryPhysician:"",
-      schedule:new Date(),
-      reason:"",
-      note:"",
-      cancellationReason:"",
+      primaryPhysician:appointment ? appointment.primaryPhysician: '',
+      schedule:appointment ? new Date(appointment.schedule): new Date(Date.now()),
+      reason:appointment? appointment.reason:'',
+      note:appointment ? appointment.note: '',
+      cancellationReason:appointment?.cancellationReason || '',
     },
   })
 
@@ -77,6 +84,7 @@ export function AppointmentForm({
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof AppointmentFormValidation>) {
     // Do something with the form values.
+    console.log('submitting your  appointment status')
     // ✅ This will be type-safe and validated.
     setIsLoading(true);
     // basically we will be having 3 different appointment status 
@@ -121,6 +129,30 @@ export function AppointmentForm({
           router.push(`/patients/${userId}/new-appointment/success?appointmentId=${appointment.$id}`);
 
         }
+      }else {
+        // here we will write code to cancel an appointment
+        console.log('Updating your pending appointment')
+        const appointmentToUpdate={
+          userId,
+          appointmentId:appointment?.$id!,
+          appointment:{
+            primaryPhysician:values?.primaryPhysician,
+            schedule:new Date(values?.schedule),
+            status:status as Status,
+            cancellationReason:values?.cancellationReason,
+          },
+          type 
+           
+        }
+        const updatedAppointment=await updateAppointment(appointmentToUpdate);
+
+        if(updatedAppointment){
+          setOpen && setOpen(false);
+          form.reset();
+        }
+        
+
+
       }
 
       
@@ -142,12 +174,12 @@ export function AppointmentForm({
   return (
     <Form {...form}>
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6  flex-1">
-      <section className='mb-12 space-y-4'>
+     {type === 'create' && <section className='mb-12 space-y-4'>
         <h1 className='header'>New Appointment </h1>
         <p className='text-dark-700'>Request a new Appointment in 10 seconds</p>
 
 
-      </section>
+      </section> }
       {/* using ternary operator to check if the type is not equal to cancel in that case we can render all custom fields */}
 
       {type !== "cancel" && (
