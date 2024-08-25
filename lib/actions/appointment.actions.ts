@@ -4,8 +4,8 @@
 // here in this file we will creating all of our required server actions for appointments
 
 import { ID, Query } from "node-appwrite";
-import { DATABASE_ID, databases, APPOINTMENT_COLLECTION_ID } from "../appwrite.config";
-import { parseStringify } from "../utils";
+import { DATABASE_ID, databases, APPOINTMENT_COLLECTION_ID, messaging } from "../appwrite.config";
+import { formatDateTime, parseStringify } from "../utils";
 import { parse } from "path";
 import { Appointment } from "@/types/appwrite.types";
 import { revalidatePath } from "next/cache";
@@ -123,6 +123,14 @@ export const updateAppointment=async({appointmentId,userId,appointment,type}:Upd
         }
         //else we want to send an sms notification if the appointmnet was successfully booked
         //todo sms notifcation after success
+        const smsMessage=`
+        Hi it is CarePulse.
+        ${type === 'schedule'? `Your appointment has been scheduled for  ${formatDateTime(appointment.schedule!).dateTime} with Dr . ${appointment.primaryPhysician}`:
+            `We regret to inform you that your appointment has been cancelled for the following reason: ${appointment.cancellationReason}`
+        }
+        `
+
+        await sendSMSNotification(userId,smsMessage);
         //now we will be revalidate the path 
         revalidatePath('/admin');
         return parseStringify(updateAppointment)
@@ -130,5 +138,26 @@ export const updateAppointment=async({appointmentId,userId,appointment,type}:Upd
 
     }catch(error){
         console.log(error);
+    }
+}
+
+
+// adding server action for sms notification
+export const sendSMSNotification=async(userId:string,content:string)=>{
+    try{
+
+        const message=await messaging.createSms(
+            ID.unique(),
+            content,
+            [],
+            [userId]
+        )
+        // once we have the message we can simply return it to the frontend
+        return parseStringify(message);
+         
+        
+    }catch(error){
+        console.log(error);
+
     }
 }
