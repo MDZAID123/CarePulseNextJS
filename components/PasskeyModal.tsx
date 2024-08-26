@@ -30,14 +30,14 @@ const PasskeyModal = () => {
     const path=usePathname();
 
 
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
     // now since we have this state declared we can pass this state to the alert dialog box
     // we will be triggering the opening of the dialog box somewhere else
-    const [passkey,setPasskey]=useState('')
+    const [passkey,setPasskey]=useState("")
 
-    const [error,setError]=useState('')
+    const [error,setError]=useState("")
 
-    const encryptedKey= typeof window !== 'undefined'? window.localStorage.getItem('accesskey'):null;
+    const encryptedKey= typeof window !== "undefined" ? window.localStorage.getItem('accesskey'):null;
 
 
     // creating a use effect which will allow us to check if the access key exists or not 
@@ -72,7 +72,7 @@ const PasskeyModal = () => {
             const encryptedKey=encryptKey(passkey);
             localStorage.setItem('accessKey',encryptedKey);
             setOpen(false);
-            // router.push('/admin')
+            router.push('/admin')
 
 
         }else{

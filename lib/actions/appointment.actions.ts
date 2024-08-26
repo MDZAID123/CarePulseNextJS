@@ -62,7 +62,7 @@ export const getRecentAppointmentList=async ()=> {
         const appointments=await databases.listDocuments(
             DATABASE_ID!,
             APPOINTMENT_COLLECTION_ID!,
-            [Query.orderDesc('$createdAt')]
+            [Query.orderDesc("$createdAt")]
 
         );
 
@@ -92,14 +92,14 @@ export const getRecentAppointmentList=async ()=> {
         const data={
             totalCount:appointments.total,
             ...counts,
-            documents:appointments.documents
+            documents:appointments.documents,
         }
 
         return parseStringify(data);
 
 
     }catch(error){
-        console.log(error);
+        console.log("An error occured while retrivring the recent appointments:",error)
     }
 }
 

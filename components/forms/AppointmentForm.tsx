@@ -38,7 +38,7 @@ export function AppointmentForm({
   patientId:string;
   type:"create" |"schedule"|"cancel";
   appointment?:Appointment,
-  setOpen:(open:boolean) => void
+  setOpen?:(open:boolean) => void
   
 }) {
   // 1. Define your form.

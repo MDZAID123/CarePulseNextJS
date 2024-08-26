@@ -35,8 +35,8 @@ export default async  function NewAppointment({params: { userId }}:SearchParamPr
           {/* <PatientForm/> */}
           {/* here we will put appointment form  */}
           <AppointmentForm
+          patientId={patient?.$id} // change on this line made for testing
           userId={userId}
-          patientId={patient.$id} // change on this line made for testing
           type="create"
           />
             <p className="copyright mt-10 py-12">
