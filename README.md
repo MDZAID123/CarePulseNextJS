@@ -1,4 +1,21 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`]
+(https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+My docs which i used to make notes while doing this project and noting each step and action i was taking -
+https://docs.google.com/document/d/1e7-D1s6s7-e36vBxNFmY53XYWZ-3aTtc4CD01ZOmoBk/edit?usp=sharing
+
+![image](https://github.com/user-attachments/assets/20cacc35-985b-4126-8d9d-cbebd9a05cbf)
+![image](https://github.com/user-attachments/assets/d300286b-2e83-46bc-bf08-ba73ed58e670)
+![image](https://github.com/user-attachments/assets/e94f6842-1a0d-492b-8c93-4ded7ff219d0)
+![image](https://github.com/user-attachments/assets/4cbe44bf-56af-43f5-8429-d792534fecb1)
+![image](https://github.com/user-attachments/assets/ae0783b9-4ea9-49f4-9dd5-951c4b94cd9f)
+![image](https://github.com/user-attachments/assets/17eb7eef-bab8-4e1d-885b-f284abb97fd9)
+ALL Thanks to JSMASTERY FOR THIS AMAZING TUTORIAL AND TEACHING METHODS 
+
+
+
+
+
+
 
 ## Getting Started
 
